@@ -1,18 +1,30 @@
 import React, { createContext , useState , useContext} from 'react'
+import axios from 'axios';
 
 const AuthContext = createContext();
 
 export const Authprovider = ({children})=>{
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(
+        !!localStorage.getItem('token')
+    );
 
     const login = (token)=>{
         localStorage.setItem('token', token);
         setIsAuthenticated(true);
     };
-
-    const logout = ()=>{
-        localStorage.removeItem('token', token);
-        setIsAuthenticated(false);
+    const API_URL= 'http://localhost:8000';
+    const logout = async ()=>{
+        
+        try {
+            await axios.post(`${API_URL}/logout`,{},{
+                withCredentials: true,
+            }); // Adjust the URL as needed
+            localStorage.removeItem('token');
+            setIsAuthenticated(false);
+    
+          } catch (err) {
+            console.error('Logout failed', err);
+          }
     };
 
     return (

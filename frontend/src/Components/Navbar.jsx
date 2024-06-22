@@ -8,6 +8,7 @@ const Navbar = () => {
 
   const {isAuthenticated, logout} = useAuth();
 
+
   return (
     <div>
       <nav className='flex  bg-slate-900'>
