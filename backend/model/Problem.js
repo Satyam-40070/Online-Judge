@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const sampleTestCaseSchema = new Schema({
+/*const sampleTestCaseSchema = new Schema({
     input: {
       type: String,
       required: true,
@@ -9,14 +9,22 @@ const sampleTestCaseSchema = new Schema({
       type: String,
       required: true,
     }
-  }, { _id: false });
+  }, { _id: false });*/
 
 const problemSchema = new mongoose.Schema({
     title:{
         type:String,
         required:true
     },
-    desciption:{
+    description:{
+        type:String,
+        required:true
+    },
+    category:{
+      type:String,
+      required:true
+  },
+    level:{
         type:String,
         required:true
     },
@@ -28,11 +36,11 @@ const problemSchema = new mongoose.Schema({
         type:String,
         required: true
     },
-    constraints:{
+   /* constraints:{
         type:String,
         required:true
-    },
-    sampleTestCases: [sampleTestCaseSchema],
+    },*/
+    //sampleTestCases: [sampleTestCaseSchema],
    createdAt: {
     type: Date,
     default: Date.now,

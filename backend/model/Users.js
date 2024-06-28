@@ -17,7 +17,19 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required: true
+    },
+    role:{
+        type:String,
+        enum:['user', 'admin'],
+        default: 'user'
     }
+   /* verificationToken: {
+        type: String
+      },
+      verified: {
+        type: Boolean,
+        default: false
+      }*/
 });
 
 const User = mongoose.model('User', userSchema);

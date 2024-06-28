@@ -34,6 +34,7 @@ const Register = () => {
         } catch (err) {
             if (err.response) {
                 // Server responded with a status other than 200 range
+                alert(err.response.data);
                 console.log('Response data:', err.response.data);
                 console.log('Response status:', err.response.status);
                 console.log('Response headers:', err.response.headers);
