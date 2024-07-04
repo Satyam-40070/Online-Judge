@@ -63,7 +63,7 @@ const Login = () => {
                 <input type="checkbox" />
                 <label htmlFor="Remember me">Remember me</label>
             </div>
-            <Link to='' className='text-blue-600'>Forgot Password?</Link>
+            <Link to='/forgot-pass' className='text-blue-600'>Forgot Password?</Link>
            </div>
         <button className='w-full mb-4 text-[18px] mt-6 rounded-full bg-white text-emerald-800 hover:bg-emerald-600 hover:text-white py-2' type='Submit'>Sign In</button>
         <div>

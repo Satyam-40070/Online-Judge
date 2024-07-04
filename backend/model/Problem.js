@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 
-/*const sampleTestCaseSchema = new Schema({
+const TestCaseSchema = new mongoose.Schema({
     input: {
       type: String,
       required: true,
     },
-    output: {
+    expectedOutput: {
       type: String,
       required: true,
     }
-  }, { _id: false });*/
+  }, { _id: false });
 
 const problemSchema = new mongoose.Schema({
     title:{
@@ -40,7 +40,7 @@ const problemSchema = new mongoose.Schema({
         type:String,
         required:true
     },*/
-    //sampleTestCases: [sampleTestCaseSchema],
+    TestCases: [TestCaseSchema],
    createdAt: {
     type: Date,
     default: Date.now,

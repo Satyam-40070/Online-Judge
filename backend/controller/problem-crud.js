@@ -4,9 +4,9 @@ import Problem from "../model/Problem.js";
 export const createProblem = async (req, res) => {
     // Create new Problem logic
     try {
-        const {title,description,category, level, inputFormat, outputFormat} = req.body
+        const {title,description,category, level, inputFormat, outputFormat, TestCases} = req.body
     console.log(req.body);
-    if(!(title && description && level && inputFormat && outputFormat)){
+    if(!(title && description && level && inputFormat && outputFormat && TestCases)){
         return res.status(400).json({message: "Please fill all fields"});
     }
     const prob = await Problem.create({
@@ -16,6 +16,7 @@ export const createProblem = async (req, res) => {
         level,
         inputFormat,
         outputFormat,
+        TestCases
     });
 
 
@@ -29,12 +30,12 @@ export const createProblem = async (req, res) => {
 export const updateProblem = async (req, res) => {
     // Update Problem logic
     const { id } = req.params;
-  const { title, description,category, level, inputFormat, outputFormat } = req.body;
-
+  const { title, description,category, level, inputFormat, outputFormat,TestCases } = req.body;
+    console.log(req.body);
   try {
     const problem = await Problem.findByIdAndUpdate(
       id,
-      { title, description,category, level, inputFormat, outputFormat, updatedAt: Date.now() },
+      { title, description,category, level, inputFormat, outputFormat, TestCases, updatedAt: Date.now() },
       { new: true, runValidators: true }
     );
 

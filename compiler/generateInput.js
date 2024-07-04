@@ -9,6 +9,7 @@ if (!fs.existsSync(dirInputs)) {
 }
 
 const generateInputFile = async (input) => {
+    console.log("generateInput called");
     const jobID = uuid();
     const input_filename = `${jobID}.txt`;
     const input_filePath = path.join(dirInputs, input_filename);

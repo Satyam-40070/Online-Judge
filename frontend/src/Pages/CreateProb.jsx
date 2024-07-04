@@ -9,16 +9,30 @@ const CreateProb = () => {
     level: '',
     inputFormat: '',
     outputFormat: '',
+    TestCases: [{ input: '', expectedOutput: '' }]
   });
+
+  const [TestCases, setTestCases] = useState([{ input: '', expectedOutput: '' }]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleTestCaseChange = (index, field, value) => {
+    const newTestCases = [...TestCases];
+    newTestCases[index][field] = value;
+    setTestCases(newTestCases);
+  };
+
+  const addTestCase = () => {
+    setTestCases([...TestCases, { input: '', expectedOutput: '' }]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:8000/problem`, formData);
+      const payload = { ...formData, TestCases };
+      const response = await axios.post('http://localhost:8000/problem', payload);
       console.log('Problem created:', response.data);
       // Clear the form
       setFormData({
@@ -28,7 +42,9 @@ const CreateProb = () => {
         level: '',
         inputFormat: '',
         outputFormat: '',
+        TestCases: [{ input: '', expectedOutput: '' }]
       });
+      setTestCases([{ input: '', expectedOutput: '' }])
     } catch (error) {
       console.error('Error creating problem:', error.response?.data || error.message);
     }
@@ -114,14 +130,37 @@ const CreateProb = () => {
           ></textarea>
         </div>
 
-        <div>
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Create Problem
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Test Cases</label>
+          {TestCases.map((testCase, index) => (
+            <div key={index} className="mb-2">
+              <input
+                type="text"
+                placeholder="Input"
+                className="w-full p-2 mb-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                value={testCase.input}
+                onChange={(e) => handleTestCaseChange(index, 'input', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Expected Output"
+                className="w-full p-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                value={testCase.expectedOutput}
+                onChange={(e) => handleTestCaseChange(index, 'expectedOutput', e.target.value)}
+              />
+            </div>
+          ))}
+          <button type="button" className="bg-blue-500 text-white p-2 rounded" onClick={addTestCase}>
+            Add Test Case
           </button>
         </div>
+
+        <button
+          type="submit"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Create Problem
+        </button>
       </form>
     </div>
   );

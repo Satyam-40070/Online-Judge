@@ -7,6 +7,10 @@ import Register from './Pages/Register.jsx';
 import Problems from './Pages/Problems.jsx';
 import Prob_editor from './Pages/Prob_editor.jsx';
 import CreateProb from './Pages/CreateProb.jsx';
+import Contests from './Pages/Contests.jsx';
+import CreateContest from './Pages/CreateContest.jsx';
+import ForgotPassword from './Components/Forgotpasssword.jsx';
+import ResetPassword from './Components/ResetPassword.jsx';
 
 function App() {
 
@@ -23,6 +27,10 @@ function App() {
           <Route path='/problems' element={<Problems/>}/>
           <Route path='/editor/:id' element={<Prob_editor/>}/>
           <Route path='/createProb' element={<CreateProb/>}/>
+          <Route path='/contest' element={<Contests/>}/>
+          <Route path='/CreateContest' element={<CreateContest/>}/>
+          <Route path='/forgot-pass' element={<ForgotPassword/>}/>
+          <Route path='/reset-password/:id/:token' element={<ResetPassword/>}/>
         </Routes>
       </BrowserRouter>
     
