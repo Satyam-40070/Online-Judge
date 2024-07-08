@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import axios from 'axios';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Lang_selector from '../Components/Lang_selector.jsx';
 import DOMPurify from 'dompurify';
-import { useAuth } from '../AuthContext.jsx';
 
-const Prob_editor = () => {
+const Contesteditor = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const {role} = useAuth();
   const [code, setCode] = useState(`#include <iostream>
 
   // Define the main function
@@ -26,7 +23,7 @@ const Prob_editor = () => {
   const [problem, setProblem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [TestCases, setTestCases] = useState([]);
+  const [testCases, setTestCases] = useState([]);
   const [verdict, setVerdict] = useState('');
   const [testCaseResults, setTestCaseResults] = useState([]); // New state for test case results
 
@@ -74,10 +71,10 @@ const Prob_editor = () => {
         if (!id) {
           throw new Error('Problem ID is undefined');
         }
-        const response = await axios.get(`http://localhost:8000/problem/${id}`);
+        const response = await axios.get(`http://localhost:8000/allContestProblembyId/${id}`);
         const problemData = response.data;
         setProblem(problemData);
-        setTestCases(response.data.TestCases);
+        setTestCases(response.data.testCases);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching problem', error);
@@ -141,41 +138,12 @@ const Prob_editor = () => {
     };
 
     try {
-      const { data } = await axios.post(`http://localhost:5000/submit/${id}`, payload);
+      const { data } = await axios.post(`http://localhost:5000/Contestsubmit/${id}`, payload);
       console.log(data);
       setVerdict(data.verdict);
       setTestCaseResults(data.results); // Set test case results
     } catch (error) {
       console.log(error.response);
-    }
-  };
-
-  /*const handleUpdate = async () => {
-    const payload = {
-      title: problem.title,
-      description: problem.description,
-      level: problem.level,
-      examples,
-      constraints,
-      TestCases
-    };
-
-    try {
-      const { data } = await axios.put(`http://localhost:8000/problem/${id}`, payload);
-      console.log('Problem updated:', data);
-      alert('Problem updated successfully');
-    } catch (error) {
-      console.error('Error updating problem:', error.response);
-    }
-  };*/
-
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:8000/problem/${id}`);
-      alert('Problem deleted successfully');
-      navigate('/problems'); // Redirect to problems page after deletion
-    } catch (error) {
-      console.error('Error deleting problem:', error.response);
     }
   };
 
@@ -209,21 +177,11 @@ const Prob_editor = () => {
             <p><strong>Output:</strong> {example.outputExample}</p>
           </div>
         ))}
+        <br />
+        <p ><h1 className='text-2xl'>Topics:</h1> {problem.topics}</p>
       </div>
       
       <div className="editor h-[auto] w-3/5">
-      {role === 'admin' && (
-        <>
-          <Link to='/createProb'>
-            <button className="bg-blue-500 min-h-10 hover:bg-blue-700 ml-[500px] text-white font-bold py-2 px-4 rounded">
-              Update Problem
-            </button>
-          </Link>
-          <button onClick={handleDelete} className="bg-red-500 min-h-10 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
-            Delete Problem
-          </button>
-        </>
-      )}
         <Lang_selector language={language} onSelect={onSelect} />
         <Editor height="70vh" width='100%' theme='vs-dark' language={language} onChange={(value) => setCode(value)} value={code} />
         <div className='flex w-full'>
@@ -253,4 +211,4 @@ const Prob_editor = () => {
   )
 }
 
-export default Prob_editor;
+export default Contesteditor;

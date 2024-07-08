@@ -1,12 +1,20 @@
 import mongoose from "mongoose";
 import Problem from "../model/Problem.js";
 
+export const isAdmin = (req, res, next) => {
+  console.log("Role: ",req.user.role)
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Unauthorized' });
+  }
+  next();
+};
+
 export const createProblem = async (req, res) => {
     // Create new Problem logic
     try {
-        const {title,description,category, level, inputFormat, outputFormat, TestCases} = req.body
+        const {title,description,category, level, examples, constraints, TestCases} = req.body
     console.log(req.body);
-    if(!(title && description && level && inputFormat && outputFormat && TestCases)){
+    if(!(title && description && level && examples&& constraints && TestCases)){
         return res.status(400).json({message: "Please fill all fields"});
     }
     const prob = await Problem.create({
@@ -14,8 +22,8 @@ export const createProblem = async (req, res) => {
         description,
         category,
         level,
-        inputFormat,
-        outputFormat,
+        examples,
+        constraints,
         TestCases
     });
 
@@ -30,12 +38,12 @@ export const createProblem = async (req, res) => {
 export const updateProblem = async (req, res) => {
     // Update Problem logic
     const { id } = req.params;
-  const { title, description,category, level, inputFormat, outputFormat,TestCases } = req.body;
+  const { title,description,category, level, examples, constraints, TestCases } = req.body;
     console.log(req.body);
   try {
     const problem = await Problem.findByIdAndUpdate(
       id,
-      { title, description,category, level, inputFormat, outputFormat, TestCases, updatedAt: Date.now() },
+      { title,description,category, level, examples, constraints, TestCases, updatedAt: Date.now() },
       { new: true, runValidators: true }
     );
 

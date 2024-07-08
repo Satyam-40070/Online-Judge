@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './Problems.css';
+import { useAuth } from '../AuthContext';
+
 
 const Problems = () => {
   const [problemsByCategory, setProblemsByCategory] = useState({});
+  const {role}=useAuth();
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -29,17 +33,19 @@ const Problems = () => {
   }, []);
 
   return (
-    <div className='main-container min-h-[670px] h-[auto] bg-slate-800'>
-      <button className="bg-sky-700 text-white ml-[1300px] mt-2 font-extrabold p-2 px-6 rounded-xl hover:bg-sky-500 transition-colors">
+    <div className='main-container mt-4 pt-8 min-h-[740px] h-[auto] bg-gradient-to-br from-slate-800 to-black'>
+      {role==='admin' &&(
+      <button className="bg-sky-700 mt-5 text-white ml-[1300px]  font-extrabold p-2 px-6 rounded-xl hover:bg-sky-500 transition-colors">
         <Link to='/createProb'>Create Problem</Link>
       </button>
+)}
       {Object.keys(problemsByCategory).map((category) => (
         <div key={category} className="category-section mx-12 my-8">
           <h1 className="text-3xl text-white pt-3 mb-4">{category}</h1>
           <div className="problems-row flex flex-wrap gap-10">
             {problemsByCategory[category].map((problem) => (
               <div key={problem._id} className="ar-p w-60 h-80 bg-gray-700 rounded-3xl text-neutral-300 p-4 flex flex-col items-start justify-center gap-3 hover:bg-gray-900 hover:shadow-2xl hover:shadow-sky-400 transition-shadow">
-                <div className="w-52 h-40 bg-sky-300 rounded-2xl"></div>
+                <div  className="cardImg w-52 h-40 rounded-2xl"></div>
                 <div>
                   <p className="font-extrabold">{problem.title}</p>
                   <p className="">Level: {problem.level}</p>

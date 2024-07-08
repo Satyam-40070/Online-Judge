@@ -7,12 +7,13 @@ const CreateProb = () => {
     description: '',
     category: '',
     level: '',
-    inputFormat: '',
-    outputFormat: '',
+    examples: [{ inputExample: '', outputExample: '' }],
+    constraints: '',
     TestCases: [{ input: '', expectedOutput: '' }]
   });
 
   const [TestCases, setTestCases] = useState([{ input: '', expectedOutput: '' }]);
+  const [examples, setExamples] = useState([{ inputExample: '', outputExample: '' }]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,15 +24,23 @@ const CreateProb = () => {
     newTestCases[index][field] = value;
     setTestCases(newTestCases);
   };
+  const handleExampleChange = (index, field, value) => {
+    const newExamples = [...examples];
+    newExamples[index][field] = value;
+    setExamples(newExamples);
+  };
 
   const addTestCase = () => {
     setTestCases([...TestCases, { input: '', expectedOutput: '' }]);
+  };
+  const addExample = () => {
+    setExamples([...examples, { inputExapmle: '', outputExample: '' }]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const payload = { ...formData, TestCases };
+      const payload = { ...formData,examples, TestCases };
       const response = await axios.post('http://localhost:8000/problem', payload);
       console.log('Problem created:', response.data);
       // Clear the form
@@ -40,11 +49,12 @@ const CreateProb = () => {
         description: '',
         category: '',
         level: '',
-        inputFormat: '',
-        outputFormat: '',
+        examples: [{ inputExample: '', outputExample: '' }],
+        constraints: '',
         TestCases: [{ input: '', expectedOutput: '' }]
       });
       setTestCases([{ input: '', expectedOutput: '' }])
+      setExamples([{ inputExample: '', outputExample: '' }])
     } catch (error) {
       console.error('Error creating problem:', error.response?.data || error.message);
     }
@@ -52,7 +62,7 @@ const CreateProb = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Create a Problem</h2>
+      <h2 className="text-2xl font-bold mb-6">Create/Update a Problem</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Title</label>
@@ -107,10 +117,10 @@ const CreateProb = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Input Format</label>
+          <label className="block text-sm font-medium text-gray-700">Constraints</label>
           <textarea
-            name="inputFormat"
-            value={formData.inputFormat}
+            name="constraints"
+            value={formData.constraints}
             onChange={handleChange}
             rows="2"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -118,16 +128,29 @@ const CreateProb = () => {
           ></textarea>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Output Format</label>
-          <textarea
-            name="outputFormat"
-            value={formData.outputFormat}
-            onChange={handleChange}
-            rows="2"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            required
-          ></textarea>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Examples</label>
+          {examples.map((example, index) => (
+            <div key={index} className="mb-2">
+              <input
+                type="text"
+                placeholder="InputExample"
+                className="w-full p-2 mb-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                value={example.inputExample}
+                onChange={(e) => handleExampleChange(index, 'inputExample', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="OutputExample"
+                className="w-full p-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                value={example.outputExample}
+                onChange={(e) => handleExampleChange(index, 'outputExample', e.target.value)}
+              />
+            </div>
+          ))}
+          <button type="button" className="bg-blue-500 text-white p-2 rounded" onClick={addExample}>
+            Add Example
+          </button>
         </div>
 
         <div className="mb-4">

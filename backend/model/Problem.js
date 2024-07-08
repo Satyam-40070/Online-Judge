@@ -11,6 +11,17 @@ const TestCaseSchema = new mongoose.Schema({
     }
   }, { _id: false });
 
+  const exampleSchema = new mongoose.Schema({
+    inputExample: {
+      type: String,
+      required: true,
+    },
+    outputExample: {
+      type: String,
+      required: true,
+    }
+  }, { _id: false });
+
 const problemSchema = new mongoose.Schema({
     title:{
         type:String,
@@ -28,18 +39,11 @@ const problemSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    inputFormat:{
+    examples: [exampleSchema],
+    constraints:{
         type:String,
         required:true
     },
-    outputFormat:{
-        type:String,
-        required: true
-    },
-   /* constraints:{
-        type:String,
-        required:true
-    },*/
     TestCases: [TestCaseSchema],
    createdAt: {
     type: Date,

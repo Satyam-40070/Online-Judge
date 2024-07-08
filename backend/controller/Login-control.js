@@ -1,7 +1,8 @@
 import User from '../model/Users.js';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const Login = async (req,res)=>{
     try{

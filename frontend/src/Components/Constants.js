@@ -1,6 +1,5 @@
 export const LANGUAGE_VER = {
     cpp: "C++17",
-    js: "18.15.0",
     py: "3.10.0",
     java: "15.0.2",
 }
