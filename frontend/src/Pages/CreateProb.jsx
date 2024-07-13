@@ -43,6 +43,7 @@ const CreateProb = () => {
       const payload = { ...formData,examples, TestCases };
       const response = await axios.post('http://localhost:8000/problem', payload);
       console.log('Problem created:', response.data);
+      alert('Problem created successfully');
       // Clear the form
       setFormData({
         title: '',
@@ -62,7 +63,7 @@ const CreateProb = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Create/Update a Problem</h2>
+      <h2 className="text-2xl mt-14 underline text-amber-900 font-bold mb-6">Create a Problem</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Title</label>

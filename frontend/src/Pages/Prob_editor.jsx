@@ -6,20 +6,12 @@ import Lang_selector from '../Components/Lang_selector.jsx';
 import DOMPurify from 'dompurify';
 import { useAuth } from '../AuthContext.jsx';
 
+
 const Prob_editor = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const {role} = useAuth();
-  const [code, setCode] = useState(`#include <iostream>
-
-  // Define the main function
-  int main() { 
-      // Output "Hello World!" to the console
-      std::cout << "Hello World!"; 
-      
-      // Return 0 to indicate successful execution
-      return 0; 
-  }`);
+  const {role, user} = useAuth();
+  const [code, setCode] = useState('');
   const [language, setLanguage] = useState('cpp');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -29,6 +21,7 @@ const Prob_editor = () => {
   const [TestCases, setTestCases] = useState([]);
   const [verdict, setVerdict] = useState('');
   const [testCaseResults, setTestCaseResults] = useState([]); // New state for test case results
+  const [submissionCount, setSubmissionCount] = useState(0);
 
   const boilerplateCode = {
     cpp: `#include <iostream>
@@ -51,7 +44,7 @@ const Prob_editor = () => {
       # Output "Hello World!" to the console
       print("Hello World!")
   
-  if __name__ == "__main__":
+if __name__ == "__main__":
       main()`
   };
 
@@ -122,9 +115,10 @@ const Prob_editor = () => {
       code,
       input
     };
-
+    //console.log(process.env.COMPILER_URL)
     try {
-      const { data } = await axios.post(`http://localhost:5000/run`, payload);
+      
+      const { data } = await axios.post(`http://65.1.94.83:5000/run`, payload);
       console.log(data);
       setOutput(data.output1);
     } catch (error) {
@@ -132,42 +126,47 @@ const Prob_editor = () => {
     }
   };
 
+  const handleSubmission = async ()=>{
+    const payload = {
+      userId: user, // Assuming user object has an id field
+      problemId: id,
+      title: problem.title, // Assuming you have the title of the problem
+      language,
+      code,
+      verdict: verdict || 'Pending',
+      count: submissionCount
+    };
+    try {
+      const { data } = await axios.post(`http://localhost:8000/submission`, payload);
+      console.log("Count:",data.count);
+      setSubmissionCount(prevCount => prevCount + 1);
+    } catch (error) {
+      console.log("Error fetching submissionCount:",error.response);
+    }
+  }
+
   const handleSubmit = async () => {
     console.log('handleSubmit called');
-
+    
     const payload = {
+      userId: user, // Assuming user object has an id field
+      problemId: id,
       language,
       code,
     };
 
     try {
-      const { data } = await axios.post(`http://localhost:5000/submit/${id}`, payload);
+      const { data } = await axios.post(`http://localhost:8000/submit`, payload);
       console.log(data);
       setVerdict(data.verdict);
+      //setSubmissionCount(data.submissionCount);
       setTestCaseResults(data.results); // Set test case results
+      await handleSubmission();
     } catch (error) {
       console.log(error.response);
     }
   };
 
-  /*const handleUpdate = async () => {
-    const payload = {
-      title: problem.title,
-      description: problem.description,
-      level: problem.level,
-      examples,
-      constraints,
-      TestCases
-    };
-
-    try {
-      const { data } = await axios.put(`http://localhost:8000/problem/${id}`, payload);
-      console.log('Problem updated:', data);
-      alert('Problem updated successfully');
-    } catch (error) {
-      console.error('Error updating problem:', error.response);
-    }
-  };*/
 
   const handleDelete = async () => {
     try {
@@ -214,7 +213,7 @@ const Prob_editor = () => {
       <div className="editor h-[auto] w-3/5">
       {role === 'admin' && (
         <>
-          <Link to='/createProb'>
+          <Link to={`/updateProb/${id}`}>
             <button className="bg-blue-500 min-h-10 hover:bg-blue-700 ml-[500px] text-white font-bold py-2 px-4 rounded">
               Update Problem
             </button>
@@ -224,8 +223,11 @@ const Prob_editor = () => {
           </button>
         </>
       )}
+      <div className='flex justify-between'>
         <Lang_selector language={language} onSelect={onSelect} />
-        <Editor height="70vh" width='100%' theme='vs-dark' language={language} onChange={(value) => setCode(value)} value={code} />
+        <span>Submissions: {submissionCount}</span>
+        </div>
+        <Editor height="70vh" width='100%' theme='vs-dark' language={language === 'py' ? 'python' : language} onChange={(value) => setCode(value)} value={code} />
         <div className='flex w-full'>
           <div className="in w-1/2 mt-4 p-3 min-h-44 border border-gray-300 rounded-lg flex flex-col space-y-2">
             <h2 className="text-lg font-semibold mb-2">Input</h2>
@@ -234,12 +236,16 @@ const Prob_editor = () => {
           <div className="in-out ml-5 w-1/2 mt-4 p-3 min-h-44 border border-gray-300 rounded-lg flex flex-col space-y-2">
             <h2 className="text-lg font-semibold mb-2">Output</h2>
             <p>{output}</p>
-            <p>Verdict: {verdict}</p>
+            <p>Verdict: <span className={`ml-2 font-bold ${verdict === 'Accepted' ? 'text-green-600' : 'text-red-600'}`}>
+              {verdict}
+            </span> </p>
             <div>
               {testCaseResults.map((result, index) => (
                 <p key={index}>
+                  <span className={`text-white ${result.passed?  'bg-green-500' : 'bg-red-500'}`}>
                   {result.testCase}: {result.passed ? 'Passed' : 'Failed'} (Output: {result.output})
-                </p>
+                  </span>           
+                  </p>
               ))}
             </div>
           </div>

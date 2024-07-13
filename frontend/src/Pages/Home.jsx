@@ -1,14 +1,21 @@
 import React from 'react'
+import { Boxes } from "../Components/background-boxes";
+import { cn } from "../utils/cn";
 import './Home.css'
 import { useAuth } from '../AuthContext'
 import homeImg from '../assets/homeImg.svg'
 import { Link } from 'react-router-dom'
+import Footer from '../Components/Footer';
+import Topics from '../Components/Topics';
 
 const Home = () => {
   const { isAuthenticated } = useAuth()
   return (
-    <div className='main-container mt-7 min-h-[97vh] h-auto bg-gradient-to-br from-slate-800 to-black'>
-        <h1 className='text-6xl mx-4 text-purple-200 pt-8'>Welcome to CodeVerse - the coding universe</h1>
+    <div className="wrapper bg-gradient-to-tr from-blue-300 to-slate-500">
+    <div className='min-h-[700px] relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center rounded-lg'>
+      
+      <Boxes/>
+        <h1 className='text-6xl mx-4 mt-7 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent pt-8'>Welcome to CodeVerse - the coding universe</h1>
         <div className="content flex flex-wrap">
           <div>
         <div className='mx-4 min-h-72 max-w-[550px] text-justify'><h1 className='text-3xl text-yellow-200 pt-8'>About CodeVerse</h1>
@@ -73,7 +80,14 @@ const Home = () => {
           <img src={homeImg} alt="coding" />
         </div>
         </div>
+        
     </div>
+    <div className="topics">
+      <Topics/>
+    </div>
+     <Footer/>
+  </div>
+    
   )
 }
 

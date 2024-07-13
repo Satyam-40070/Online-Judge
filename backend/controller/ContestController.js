@@ -54,7 +54,7 @@ export const allContestProblem = async (req, res) => {
 };
 
 export const allContestProblembyId = async (req, res) => {
-    console.log("reached allContestProblembyId")
+    //console.log("reached allContestProblembyId")
   try {
     const id = req.params.id; // Trim any leading/trailing whitespace
 

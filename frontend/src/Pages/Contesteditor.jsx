@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Lang_selector from '../Components/Lang_selector.jsx';
 import DOMPurify from 'dompurify';
+import { useAuth } from '../AuthContext.jsx';
 
 const Contesteditor = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const Contesteditor = () => {
       // Return 0 to indicate successful execution
       return 0; 
   }`);
+  const {role, user} = useAuth();
   const [language, setLanguage] = useState('cpp');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -26,6 +28,7 @@ const Contesteditor = () => {
   const [testCases, setTestCases] = useState([]);
   const [verdict, setVerdict] = useState('');
   const [testCaseResults, setTestCaseResults] = useState([]); // New state for test case results
+  const [submissionCount, setSubmissionCount] = useState(0);
 
   const boilerplateCode = {
     cpp: `#include <iostream>
@@ -121,7 +124,7 @@ const Contesteditor = () => {
     };
 
     try {
-      const { data } = await axios.post(`http://localhost:5000/run`, payload);
+      const { data } = await axios.post(` http://65.1.94.83:5000/run`, payload);
       console.log(data);
       setOutput(data.output1);
     } catch (error) {
@@ -129,19 +132,41 @@ const Contesteditor = () => {
     }
   };
 
+  const handleSubmission = async ()=>{
+    const payload = {
+      userId: user, // Assuming user object has an id field
+      problemId: id,
+      title: problem.title, // Assuming you have the title of the problem
+      language,
+      code,
+      verdict: verdict || 'Pending',
+      count: submissionCount
+    };
+    try {
+      const { data } = await axios.post(`http://localhost:8000/submission`, payload);
+      console.log("Count:",data.count);
+      setSubmissionCount(prevCount => prevCount + 1);
+    } catch (error) {
+      console.log("Error fetching submissionCount:",error.response);
+    }
+  }
+
   const handleSubmit = async () => {
     console.log('handleSubmit called');
 
     const payload = {
+      userId: user, // Assuming user object has an id field
+      problemId: id,
       language,
       code,
     };
 
     try {
-      const { data } = await axios.post(`http://localhost:5000/Contestsubmit/${id}`, payload);
+      const { data } = await axios.post(`http://localhost:8000/Contestsubmit`, payload);
       console.log(data);
       setVerdict(data.verdict);
       setTestCaseResults(data.results); // Set test case results
+      await handleSubmission();
     } catch (error) {
       console.log(error.response);
     }
@@ -182,7 +207,22 @@ const Contesteditor = () => {
       </div>
       
       <div className="editor h-[auto] w-3/5">
+      {role === 'admin' && (
+        <>
+          <Link to={`/updateProb/${id}`}>
+            <button className="bg-blue-500 min-h-10 hover:bg-blue-700 ml-[500px] text-white font-bold py-2 px-4 rounded">
+              Update Problem
+            </button>
+          </Link>
+          <button onClick={handleDelete} className="bg-red-500 min-h-10 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
+            Delete Problem
+          </button>
+        </>
+      )}
+        <div className='flex justify-between'>
         <Lang_selector language={language} onSelect={onSelect} />
+        <span>Submissions: {submissionCount}</span>
+        </div>
         <Editor height="70vh" width='100%' theme='vs-dark' language={language} onChange={(value) => setCode(value)} value={code} />
         <div className='flex w-full'>
           <div className="in w-1/2 mt-4 p-3 min-h-44 border border-gray-300 rounded-lg flex flex-col space-y-2">
@@ -192,11 +232,15 @@ const Contesteditor = () => {
           <div className="in-out ml-5 w-1/2 mt-4 p-3 min-h-44 border border-gray-300 rounded-lg flex flex-col space-y-2">
             <h2 className="text-lg font-semibold mb-2">Output</h2>
             <p>{output}</p>
-            <p>Verdict: {verdict}</p>
+            <p>Verdict: <span className={`ml-2 font-bold ${verdict === 'Accepted' ? 'text-green-600' : 'text-red-600'}`}>
+              {verdict}
+            </span> </p>
             <div>
               {testCaseResults.map((result, index) => (
                 <p key={index}>
-                  {result.testCase}: {result.passed ? 'Passed' : 'Failed'} (Output: {result.output})
+                <span className={`text-white ${result.passed?  'bg-green-500' : 'bg-red-500'}`}>
+                {result.testCase}: {result.passed ? 'Passed' : 'Failed'} (Output: {result.output})
+                </span>           
                 </p>
               ))}
             </div>

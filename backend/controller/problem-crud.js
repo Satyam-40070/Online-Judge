@@ -1,13 +1,6 @@
 import mongoose from "mongoose";
 import Problem from "../model/Problem.js";
-
-export const isAdmin = (req, res, next) => {
-  console.log("Role: ",req.user.role)
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Unauthorized' });
-  }
-  next();
-};
+//import Submission from "../model/SubmissionModel.js";
 
 export const createProblem = async (req, res) => {
     // Create new Problem logic
@@ -94,10 +87,13 @@ export const getProblemById = async (req, res) => {
 
   try {
     const problem = await Problem.findById(id);
-
+    
     if (!problem) {
       return res.status(404).json({ message: 'Problem not found' });
     }
+    /*const submissionCount = await Submission.countDocuments({problemId: id});
+        problem.submissionCount = submissionCount;
+        await problem.save();*/
 
     res.status(200).json(problem);
   } catch (error) {

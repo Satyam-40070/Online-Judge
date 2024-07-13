@@ -3,9 +3,7 @@ const cors = require('cors');
 const axios = require('axios');
 const { generateFile } = require('./generateFile.js');
 const { generateInputFile } = require('./generateInput.js');
-const { executeCpp } = require('./executeCpp.js');
-const { executeJava } = require('./executeJava.js');
-const { executePy } = require('./executePy.js');
+const {executeCode} = require('./executeCode.js')
 
 const app = express();
 app.use(cors());
@@ -14,25 +12,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const executeCode = async (language, filepath, inputPath) => {
-    switch (language) {
-        case 'cpp':
-            console.log("going for cpp execution");
-            return executeCpp(filepath, inputPath);
-        case 'java':
-          console.log("going for java execution");
-            return executeJava(filepath, inputPath);
-        case 'py':
-          console.log("going for py execution");
-            return executePy(filepath, inputPath);
-        default:
-            throw new Error('Unsupported language');
-    }
-};
+
+
+app.get("/", (req, res) => {
+  res.json({ online: 'compiler' });
+});
 
 app.post('/run', async (req, res) => {
   const { language, code, input } = req.body;
-  console.log(req.body);
 
   if (code === undefined) {
     return res.status(400).json({ success: false, message: 'Code is required' });
@@ -48,6 +35,8 @@ app.post('/run', async (req, res) => {
     res.status(500).json({ success: false, message: "Error: " + error.message });
   }
 });
+/*
+API_URL = 'http://localhost:8000';
 
 app.post('/submit/:id', async (req, res) => { // Modified to get the 'id' parameter from the URL
   const { language, code } = req.body;
@@ -58,8 +47,9 @@ app.post('/submit/:id', async (req, res) => { // Modified to get the 'id' parame
   }
 
   try {
-    const { data } = await axios.get(`http://localhost:8000/problem/${id}`);
-    const filePath = await generateFile(language, code);
+    const { data } = await axios.get(`${API_URL}/problem/${id}`);
+    console.log(data);
+    const filePath = generateFile(language, code);
     let allPassed = true;
     let results = [];
 
@@ -115,7 +105,7 @@ app.post('/Contestsubmit/:id', async (req, res) => { // Modified to get the 'id'
   } catch (error) {
     res.status(500).json({ success: false, message: "Error: " + error.message });
   }
-});
+});*/
 
 app.listen(5000, () => {
   console.log('Server is listening on port 5000');

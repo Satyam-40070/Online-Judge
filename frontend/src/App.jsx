@@ -14,6 +14,7 @@ import Contesteditor from './Pages/Contesteditor.jsx';
 import ResetPassword from './Components/ResetPassword.jsx';
 import PrivateRoute from './Components/PrivateRoute.jsx';
 import LeaderboardPage from './Components/Leaderboard.jsx';
+import UpdateProb from './Pages/UpdateProb.jsx';
 import { Authprovider } from './AuthContext.jsx';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path='/reset-password/:id/:token' element={<ResetPassword/>}/>
           <Route path='/leaderboard' element={<LeaderboardPage/>}/>
           <Route path='/Contesteditor/:id' element={<Contesteditor/>}/>
+          <Route path='/updateProb/:id' element={<UpdateProb/>}/>
         </Routes>
       </BrowserRouter>
       </Authprovider>

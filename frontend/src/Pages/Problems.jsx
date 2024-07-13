@@ -33,7 +33,7 @@ const Problems = () => {
   }, []);
 
   return (
-    <div className='main-container mt-4 pt-8 min-h-[740px] h-[auto] bg-gradient-to-br from-slate-800 to-black'>
+    <div className='main-container mt-4 pt-8 pb-5  h-[auto] bg-gradient-to-br from-slate-800 to-black'>
       {role==='admin' &&(
       <button className="bg-sky-700 mt-5 text-white ml-[1300px]  font-extrabold p-2 px-6 rounded-xl hover:bg-sky-500 transition-colors">
         <Link to='/createProb'>Create Problem</Link>

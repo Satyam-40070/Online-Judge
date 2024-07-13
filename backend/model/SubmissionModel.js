@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const resultSchema = new Schema({
+/*const resultSchema = new mongoose.Schema({
     passedTestCases: {
       type: Number,
       required: true,
@@ -9,20 +9,20 @@ const resultSchema = new Schema({
       type: Number,
       required: true,
     },
-  }, { _id: false });
+  }, { _id: false });*/
 
 const submissionSchema = new mongoose.Schema({
     userId:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'User'
+        ref: 'Users'
     },
     problemId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Problem'
     },
-    code:{
+    title:{
         type: String,
         required: true
     },
@@ -30,7 +30,7 @@ const submissionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    problemName: {
+    code: {
       type: String,
       required: true,
     },
@@ -38,9 +38,14 @@ const submissionSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      result: {
+      /*result: {
         type: resultSchema,
         required: true,
+      },*/
+      count:{
+        type: Number,
+        required: true,
+        default: 0
       },
       submittedAt: {
         type: Date,

@@ -7,6 +7,7 @@ export const Authprovider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
+  const [user, setUser] = useState('');
 
   const login = (token) => {
     localStorage.setItem('token', token);
@@ -24,6 +25,7 @@ export const Authprovider = ({ children }) => {
             }
           });
           console.log("Role :",response.data.role);
+          setUser(response.data._id);
           setUsername(response.data.username);
           setRole(response.data.role);
         } catch (err) {
@@ -51,7 +53,7 @@ export const Authprovider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, username, role }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, username, role, user }}>
       {children}
     </AuthContext.Provider>
   );

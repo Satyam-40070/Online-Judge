@@ -2,6 +2,7 @@ import userCode from "../model/userCode.js";
 
 export const saveCode = async (req, res) => {
     const { id, code } = req.body;
+    console.log(req.body);
     try {
       await userCode.findOneAndUpdate({ problemId: id }, { code }, { upsert: true });
       res.status(200).send({ message: 'Code saved successfully' });
