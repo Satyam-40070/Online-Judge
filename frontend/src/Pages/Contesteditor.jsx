@@ -124,7 +124,7 @@ const Contesteditor = () => {
     };
 
     try {
-      const { data } = await axios.post(` http://65.1.94.83:5000/run`, payload);
+      const { data } = await axios.post(` http://13.202.142.140:5000/run`, payload);
       console.log(data);
       setOutput(data.output1);
     } catch (error) {
