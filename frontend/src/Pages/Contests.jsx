@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import {useAuth} from '../AuthContext.jsx'
 
 const ContestPage = () => {
   const [timeLeft, setTimeLeft] = useState(3600); // example: 1 hour in seconds
   const [isStarted, setIsStarted] = useState(false);
   const [problems, setProblems] = useState([]);
   const [solvedProblems, setSolvedProblems] = useState({});
+  const {user} = useAuth();
 
   useEffect(() => {
     let timer;
@@ -38,7 +40,7 @@ const ContestPage = () => {
     const fetchSolvedStatus = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/solvedproblems`
+          `http://localhost:8000/solvedproblems/${user}`
         );
         const solvedStatus = response.data.reduce((acc, problem) => {
           acc[problem._id] = problem.verdict === "Success";

@@ -178,7 +178,8 @@ export const submitContestCode = async(req,res)=>{
       const testCaseOutput = await executeCode(language, filePath, testCaseInputPath);
       console.log('Test case output:', testCaseOutput);
 
-      const passed = testCaseOutput === testCase.expectedOutput;
+
+      const passed = testCaseOutput.trim() === testCase.output.trim();
       results.push({ testCase: `TestCase ${index + 1}`, passed, output: testCaseOutput });
 
       if (!passed) {
