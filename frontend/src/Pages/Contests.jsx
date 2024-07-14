@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {useAuth} from '../AuthContext.jsx'
+import trophy from '../assets/trophy.png'
 
 const ContestPage = () => {
   const [timeLeft, setTimeLeft] = useState(3600); // example: 1 hour in seconds
@@ -67,6 +68,16 @@ const ContestPage = () => {
 
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-br from-slate-800 to-black p-5">
+      <div className="trophy relative flex items-center justify-center h-auto">
+      <img src={trophy} alt="trophy" className="z-10" />
+      <span className="absolute top-5 right-5">
+        <Link to='/CreateContest'>
+          <button className="bg-sky-700 text-white font-extrabold p-2 px-6 rounded-xl hover:bg-sky-500 transition-colors">
+            Create Contest problem
+          </button>
+        </Link>
+      </span>
+    </div>
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <h1 className="text-3xl font-bold mb-4 text-center">
           Ready! To Showcase Your Coding Skills

@@ -80,7 +80,7 @@ const AddContestProblem = (/*{ isLoggedIn }*/) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto w-6/12 p-6 bg-yellow-100 shadow-lg rounded-lg"
+      className="mx-auto mt-11 w-6/12 p-6 bg-yellow-100 shadow-lg rounded-lg"
     >
       <h1 className="text-3xl  font-bold mb-6 text-center text-blue-600">
         Add New Problem
