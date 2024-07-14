@@ -4,7 +4,8 @@ import User from '../model/Users.js';
 import Submission from '../model/SubmissionModel.js';
 import { generateFile } from '../../compiler/generateFile.js';
 import { generateInputFile } from '../../compiler/generateInput.js';
-import {executeCode} from '../../compiler/executeCode.js'
+import {executeCode} from '../../compiler/executeCode.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export const createSubmission = async(req,res)=>{
     try{
@@ -32,7 +33,7 @@ export const createSubmission = async(req,res)=>{
 export const submitCount = async (req, res) => {
   try {
     const problems = await Problem.find({});
-
+    uuidv4();
     const submissions = await Submission.aggregate([
       {
         $group: {
