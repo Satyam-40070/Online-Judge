@@ -1,6 +1,5 @@
 import React from 'react'
 import { Boxes } from "../Components/background-boxes";
-import { cn } from "../utils/cn";
 import './Home.css'
 import { useAuth } from '../AuthContext'
 import homeImg from '../assets/homeImg.svg'

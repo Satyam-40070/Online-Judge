@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './Problems.css';
+//import './Problems.css';
+import cardImg from '../assets/card-img.jpeg'
 import { useAuth } from '../AuthContext';
 
 
@@ -44,8 +45,8 @@ const Problems = () => {
           <h1 className="text-3xl text-white pt-3 mb-4">{category}</h1>
           <div className="problems-row flex flex-wrap gap-10">
             {problemsByCategory[category].map((problem) => (
-              <div key={problem._id} className="ar-p w-60 h-80 bg-gray-700 rounded-3xl text-neutral-300 p-4 flex flex-col items-start justify-center gap-3 hover:bg-gray-900 hover:shadow-2xl hover:shadow-sky-400 transition-shadow">
-                <div  className="cardImg w-52 h-40 rounded-2xl"></div>
+              <div key={problem._id} className="ar-p w-60 min-h-80 h-auto bg-gray-700 rounded-3xl text-neutral-300 p-4 flex flex-col items-start justify-center gap-3 hover:bg-gray-900 hover:shadow-2xl hover:shadow-sky-400 transition-shadow">
+                <div  className="cardImg w-52 h-40 rounded-2xl"><img className='w-52 h-40 rounded-2xl' src={cardImg} alt="CardImg" /></div>
                 <div>
                   <p className="font-extrabold">{problem.title}</p>
                   <p className="">Level: {problem.level}</p>
