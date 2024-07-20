@@ -2,10 +2,9 @@ import Problem from '../model/Problem.js';
 import Contestproblem from '../model/ContestProblem.js';
 import User from '../model/Users.js';
 import Submission from '../model/SubmissionModel.js';
-import { generateFile } from '../../compiler/generateFile.js';
-import { generateInputFile } from '../../compiler/generateInput.js';
-import {executeCode} from '../../compiler/executeCode.js';
-import { v4 as uuidv4 } from 'uuid';
+import {generateFile}  from './generateFile.cjs';
+import {generateInputFile} from './generateInput.cjs';
+import {executeCode} from './executeCode.cjs';
 
 export const createSubmission = async(req,res)=>{
     try{
@@ -33,7 +32,6 @@ export const createSubmission = async(req,res)=>{
 export const submitCount = async (req, res) => {
   try {
     const problems = await Problem.find({});
-    uuidv4();
     const submissions = await Submission.aggregate([
       {
         $group: {
@@ -181,7 +179,7 @@ export const submitContestCode = async(req,res)=>{
 
 
       const passed = testCaseOutput.trim() === testCase.output.trim();
-      results.push({ testCase: `TestCase ${index + 1}`, passed, output: testCaseOutput });
+      results.push({ testCase: `TestCase ${index + 1}`, passed, output: testCaseOutput.trim() });
 
       if (!passed) {
         allPassed = false;

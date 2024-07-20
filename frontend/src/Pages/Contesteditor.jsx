@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams , Link} from 'react-router-dom';
 import Lang_selector from '../Components/Lang_selector.jsx';
 import DOMPurify from 'dompurify';
 import { useAuth } from '../AuthContext.jsx';
@@ -169,6 +169,15 @@ const Contesteditor = () => {
       await handleSubmission();
     } catch (error) {
       console.log(error.response);
+    }
+  };
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8000/problem/${id}`);
+      alert('Problem deleted successfully');
+      navigate('/contest'); // Redirect to problems page after deletion
+    } catch (error) {
+      console.error('Error deleting problem:', error.response);
     }
   };
 
