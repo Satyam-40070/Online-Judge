@@ -124,7 +124,7 @@ const Contesteditor = () => {
     };
 
     try {
-      const { data } = await axios.post(` ${import.meta.env.VITE_COMPILER_URL}run`, payload);
+      const { data } = await axios.post(` https://compiler.codeuniverse.tech/run`, payload);
       console.log(data);
       setOutput(data.output1);
     } catch (error) {
