@@ -9,7 +9,7 @@ const ContestPage = () => {
   const [isStarted, setIsStarted] = useState(false);
   const [problems, setProblems] = useState([]);
   const [solvedProblems, setSolvedProblems] = useState({});
-  const {user} = useAuth();
+  const {user, role} = useAuth();
 
   useEffect(() => {
     let timer;
@@ -70,6 +70,7 @@ const ContestPage = () => {
     <div className="min-h-screen pt-20 bg-gradient-to-br from-slate-800 to-black p-5">
       <div className="trophy relative flex items-center justify-center h-auto">
       <img src={trophy} alt="trophy" className="z-10" />
+      {role==='admin' &&(
       <span className="absolute top-5 right-5">
         <Link to='/CreateContest'>
           <button className="bg-sky-700 text-white font-extrabold p-2 px-6 rounded-xl hover:bg-sky-500 transition-colors">
@@ -77,6 +78,7 @@ const ContestPage = () => {
           </button>
         </Link>
       </span>
+      )}
     </div>
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <h1 className="text-3xl font-bold mb-4 text-center">
