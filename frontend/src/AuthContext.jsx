@@ -19,7 +19,7 @@ export const Authprovider = ({ children }) => {
       // Fetch the user data
       const fetchUserData = async () => {
         try {
-          const response = await axios.get('http://localhost:8000/user', {
+          const response = await axios.get('https://online-judge-qmoq.onrender.com/user', {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -39,7 +39,7 @@ export const Authprovider = ({ children }) => {
 
 
 
-  const API_URL = 'http://localhost:8000';
+  const API_URL = 'https://online-judge-qmoq.onrender.com';
   const logout = async () => {
     try {
       await axios.post(`${API_URL}/logout`, {}, { withCredentials: true }); // Adjust the URL as needed
