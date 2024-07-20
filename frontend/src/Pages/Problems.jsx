@@ -13,7 +13,7 @@ const Problems = () => {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/problem');
+        const response = await axios.get('https://online-judge-qmoq.onrender.com/problem');
         const problems = response.data;
 
         const categorizedProblems = problems.reduce((acc, problem) => {

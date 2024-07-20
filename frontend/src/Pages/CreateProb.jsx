@@ -41,7 +41,7 @@ const CreateProb = () => {
     e.preventDefault();
     try {
       const payload = { ...formData,examples, TestCases };
-      const response = await axios.post('http://localhost:8000/problem', payload);
+      const response = await axios.post('https://online-judge-qmoq.onrender.com/problem', payload);
       console.log('Problem created:', response.data);
       alert('Problem created successfully');
       // Clear the form

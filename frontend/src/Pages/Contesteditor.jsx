@@ -58,7 +58,7 @@ const Contesteditor = () => {
   useEffect(() => {
     const fetchCode = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/code/get/${id}`);
+        const response = await axios.get(`https://online-judge-qmoq.onrender.com/code/get/${id}`);
         if (response.data.code) {
           setCode(response.data.code);
         } else {
@@ -74,7 +74,7 @@ const Contesteditor = () => {
         if (!id) {
           throw new Error('Problem ID is undefined');
         }
-        const response = await axios.get(`http://localhost:8000/allContestProblembyId/${id}`);
+        const response = await axios.get(`https://online-judge-qmoq.onrender.com/allContestProblembyId/${id}`);
         const problemData = response.data;
         setProblem(problemData);
         setTestCases(response.data.testCases);
@@ -97,7 +97,7 @@ const Contesteditor = () => {
   useEffect(() => {
     const saveCode = async () => {
       try {
-        await axios.post('http://localhost:8000/code/save', {
+        await axios.post('https://online-judge-qmoq.onrender.com/code/save', {
           id,
           code
         });
@@ -143,7 +143,7 @@ const Contesteditor = () => {
       count: submissionCount
     };
     try {
-      const { data } = await axios.post(`http://localhost:8000/submission`, payload);
+      const { data } = await axios.post(`https://online-judge-qmoq.onrender.com/submission`, payload);
       console.log("Count:",data.count);
       setSubmissionCount(prevCount => prevCount + 1);
     } catch (error) {
@@ -162,7 +162,7 @@ const Contesteditor = () => {
     };
 
     try {
-      const { data } = await axios.post(`http://localhost:8000/Contestsubmit`, payload);
+      const { data } = await axios.post(`https://online-judge-qmoq.onrender.com/Contestsubmit`, payload);
       console.log(data);
       setVerdict(data.verdict);
       setTestCaseResults(data.results); // Set test case results
@@ -173,7 +173,7 @@ const Contesteditor = () => {
   };
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8000/problem/${id}`);
+      await axios.delete(`https://online-judge-qmoq.onrender.com/problem/${id}`);
       alert('Problem deleted successfully');
       navigate('/contest'); // Redirect to problems page after deletion
     } catch (error) {

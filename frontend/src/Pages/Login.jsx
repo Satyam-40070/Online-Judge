@@ -14,7 +14,7 @@ const Login = () => {
     const navigate = useNavigate()
     const {login} = useAuth()
 
-    const API_URL= 'http://localhost:8000';
+    const API_URL= 'https://online-judge-qmoq.onrender.com';
 
     const handleSubmit= async (e)=>{
         e.preventDefault()

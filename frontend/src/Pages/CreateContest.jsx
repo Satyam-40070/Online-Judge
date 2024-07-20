@@ -43,7 +43,7 @@ const AddContestProblem = (/*{ isLoggedIn }*/) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/addContestProblem`,
+        `https://online-judge-qmoq.onrender.com/addContestProblem`,
         {
           method: "POST",
           headers: {

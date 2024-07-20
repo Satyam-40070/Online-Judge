@@ -26,7 +26,7 @@ const ContestPage = () => {
     const fetchProblems = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/allContestProblem`
+          `https://online-judge-qmoq.onrender.com/allContestProblem`
         );
         setProblems(response.data);
       } catch (error) {
@@ -41,7 +41,7 @@ const ContestPage = () => {
     const fetchSolvedStatus = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/solvedproblems/${user}`
+          `https://online-judge-qmoq.onrender.com/solvedproblems/${user}`
         );
         const solvedStatus = response.data.reduce((acc, problem) => {
           acc[problem._id] = problem.verdict === "Success";

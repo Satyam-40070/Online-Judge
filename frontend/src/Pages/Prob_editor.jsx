@@ -51,7 +51,7 @@ if __name__ == "__main__":
   useEffect(() => {
     const fetchCode = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/code/get/${id}`);
+        const response = await axios.get(`https://online-judge-qmoq.onrender.com/code/get/${id}`);
         if (response.data.code) {
           setCode(response.data.code);
         } else {
@@ -67,7 +67,7 @@ if __name__ == "__main__":
         if (!id) {
           throw new Error('Problem ID is undefined');
         }
-        const response = await axios.get(`http://localhost:8000/problem/${id}`);
+        const response = await axios.get(`https://online-judge-qmoq.onrender.com/problem/${id}`);
         const problemData = response.data;
         setProblem(problemData);
         setTestCases(response.data.TestCases);
@@ -90,7 +90,7 @@ if __name__ == "__main__":
   useEffect(() => {
     const saveCode = async () => {
       try {
-        await axios.post('http://localhost:8000/code/save', {
+        await axios.post('https://online-judge-qmoq.onrender.com/code/save', {
           id,
           code
         });
@@ -137,7 +137,7 @@ if __name__ == "__main__":
       count: submissionCount
     };
     try {
-      const { data } = await axios.post(`http://localhost:8000/submission`, payload);
+      const { data } = await axios.post(`https://online-judge-qmoq.onrender.com/submission`, payload);
       console.log("Count:",data.count);
       setSubmissionCount(prevCount => prevCount + 1);
     } catch (error) {
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     };
 
     try {
-      const { data } = await axios.post(`http://localhost:8000/submit`, payload);
+      const { data } = await axios.post(`https://online-judge-qmoq.onrender.com/submit`, payload);
       console.log(data);
       setVerdict(data.verdict);
       //setSubmissionCount(data.submissionCount);
@@ -170,7 +170,7 @@ if __name__ == "__main__":
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8000/problem/${id}`);
+      await axios.delete(`https://online-judge-qmoq.onrender.com/problem/${id}`);
       alert('Problem deleted successfully');
       navigate('/problems'); // Redirect to problems page after deletion
     } catch (error) {
