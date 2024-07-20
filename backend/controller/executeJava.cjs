@@ -14,7 +14,7 @@ const executeJava = (filepath, inputPath) => {
   const dirPath = path.dirname(filepath);
   const fileContent = fs.readFileSync(filepath, 'utf-8');
   const className = getClassName(fileContent);
-  const tempFilePath = path.join(dirPath, `${className}.java`);
+  const tempFilePath = path.join(dirPath, `Main.java`);
 
   return new Promise((resolve, reject) => {
     // Rename the file to Main.java
